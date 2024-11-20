@@ -1,5 +1,6 @@
-### README for Multi-Site Enterprise Network Implementation with Docker Containers
+### Multi-Site Enterprise Network Implementation with Docker Containers
 
+![Network Architecture](architecture/archi_projet_interco.jpg)
 ---
 
 #### **Project Overview**
