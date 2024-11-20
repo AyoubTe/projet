@@ -1,0 +1,23 @@
+# Dockerfile for VPN Server (OpenVPN)
+FROM ubuntu:20.04
+
+# Install OpenVPN and Easy-RSA
+RUN apt-get update && apt-get install -y openvpn easy-rsa
+RUN echo "vpn.samez.fr" > /etc/hostname
+
+
+# Expose the OpenVPN UDP port
+EXPOSE 1194/udp
+
+# Copy the OpenVPN server configuration and certificate files
+COPY ./VPN/server.conf /etc/openvpn/server.conf
+COPY ./VPN/ca.crt /etc/openvpn/ca.crt
+COPY ./VPN/server.crt /etc/openvpn/server.crt
+COPY ./VPN/server.key /etc/openvpn/server.key
+COPY ./VPN/dh.pem /etc/openvpn/dh.pem
+
+# Volume for OpenVPN certificates and keys
+VOLUME /etc/openvpn
+
+# Start OpenVPN with the server configuration file
+CMD ["openvpn", "--config", "/etc/openvpn/server.conf"]

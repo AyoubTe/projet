@@ -1,0 +1,15 @@
+# Dockerfile for DNSSlave (BIND9)
+FROM ubuntu:20.04
+
+# Install BIND9
+RUN apt-get update && apt-get install -y bind9 bind9utils bind9-doc
+RUN echo "slave.samez.fr" > /etc/hostname 
+
+# Expose DNS ports (53)
+EXPOSE 53/udp 53/tcp
+
+# Copy the custom BIND config files into the container
+COPY ./DNS/SLAVE/named.conf.local /etc/bind/named.conf.local
+
+# Run BIND9 in the foreground
+CMD ["named", "-g"]

@@ -1,0 +1,16 @@
+// named.conf for BIND9 DNS slave server
+
+// Define the zones for this DNS server
+zone "samez.fr" IN {
+    type slave;
+    file "/var/cache/bind/forward.info.local";  // The zone file
+    masters { 192.168.1.2; };    
+};
+
+// zone reverse
+zone "1.168.192.in-addr-arpa" IN {
+    type slave;
+    file "/var/cache/bind/reverse.info.local";
+    masters { 192.168.1.2; };
+
+};

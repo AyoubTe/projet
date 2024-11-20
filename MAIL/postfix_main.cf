@@ -1,0 +1,29 @@
+# Basic Postfix configuration for a Mail server
+
+# Set the hostname of the mail server
+myhostname = mail.samez.fr
+
+# Set the domain name
+mydomain = samez.fr
+
+# Define the fully qualified domain name
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+
+# Set the mail relay host (if using an external relay for outgoing mail)
+relayhost =
+
+# Define how mail is delivered locally (to the /var/mail/ directory)
+home_mailbox = Maildir/
+
+# Allow relay from localhost and trusted IPs
+mynetworks = 127.0.0.0/8, [::1]/128
+
+# Set mail queues (defaults should work in most cases)
+mail_spool_directory = /var/mail
+
+# Enable logging
+maillog_file = /var/log/mail.log
+
+# Enable SMTP authentication for secure email sending
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous

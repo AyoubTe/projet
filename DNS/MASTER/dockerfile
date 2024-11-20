@@ -1,0 +1,19 @@
+# Dockerfile for DNSMaster (BIND9)
+FROM ubuntu:20.04
+
+# Install BIND9
+RUN apt-get update && apt-get install -y bind9 bind9utils bind9-doc
+RUN echo "master.samez.fr" > /etc/hostname
+
+
+# Expose DNS ports (53)
+EXPOSE 53/udp 53/tcp
+
+# Copy the custom BIND config files into the container
+COPY ./DNS/MASTER/named.conf.local /etc/bind/named.conf.local
+COPY ./DNS/MASTER/named.conf.options /etc/bind/named.conf.options
+COPY ./DNS/MASTER/forward.info.local /etc/bind/forward.info.local
+COPY ./DNS/MASTER/reverse.info.local /etc/bind/reverse.info.local
+
+# Run BIND9 in the foreground
+CMD ["named", "-g"]

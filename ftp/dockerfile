@@ -1,0 +1,18 @@
+# Dockerfile for FTP Server (vsftpd)
+FROM ubuntu:20.04
+
+# Install vsftpd
+RUN apt-get update && apt-get install -y vsftpd
+RUN echo "ftp.samez.fr" > /etc/hostname
+
+# Expose FTP port (21)
+EXPOSE 21
+
+# Copy the vsftpd configuration
+COPY ./FTP/vsftpd.conf /etc/vsftpd.conf
+
+# Set up a directory for FTP files
+VOLUME /ftp
+
+# Start vsftpd
+CMD ["vsftpd", "/etc/vsftpd.conf"]

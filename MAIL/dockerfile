@@ -1,0 +1,19 @@
+# Dockerfile for Mail Server (Postfix + Dovecot)
+FROM ubuntu:20.04
+
+# Install Postfix and Dovecot
+RUN apt-get update && apt-get install -y postfix dovecot-core dovecot-imapd
+RUN echo "mail.samez.fr" > /etc/hostname
+
+# Expose mail ports (25, 465, 587 for SMTP; 993 for IMAP)
+EXPOSE 25 465 587 993
+
+# Copy configuration files
+COPY ./MAIL/postfix_main.cf /etc/postfix/main.cf
+COPY ./MAIL/dovecot.conf /etc/dovecot/dovecot.conf
+
+# Set up mail spool and directories
+VOLUME /var/mail
+
+# Start Postfix and Dovecot
+CMD ["sh", "-c", "service postfix start && service dovecot start && tail -f /var/log/mail.log"]

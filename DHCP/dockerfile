@@ -1,0 +1,15 @@
+# Dockerfile for DHCP Server (ISC-DHCP)
+FROM ubuntu:20.04
+
+# Install ISC DHCP server
+RUN apt-get update && apt-get install -y isc-dhcp-server
+RUN echo "dhcp.samez.fr" > /etc/hostname
+
+# Copy the DHCP configuration files
+COPY dhcpd.conf /etc/dhcp/dhcpd.conf
+
+# Expose DHCP ports (67/UDP)
+EXPOSE 67/udp
+
+# Run the DHCP server
+CMD ["dhcpd", "-f", "-d"]

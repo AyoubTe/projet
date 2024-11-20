@@ -1,0 +1,17 @@
+# Dockerfile for Web Server (Nginx)
+FROM nginx:alpine
+
+RUN echo "web.samez.fr" > /etc/hostname
+
+
+# Expose HTTP (80) and HTTPS (443)
+EXPOSE 80 443
+
+# Copy web content
+COPY ./WEB/index.html /usr/share/nginx/html/index.html
+
+# Nginx config files
+COPY ./WEB/nginx.conf /etc/nginx/nginx.conf
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]

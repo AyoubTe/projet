@@ -1,0 +1,21 @@
+$TTL    604800
+@       IN      SOA     samez.fr. root.samez.fr. (
+                              2024111701 ; Serial
+                         604800         ; Refresh (1 week)
+                          86400         ; Retry (1 day)
+                        2419200         ; Expire (4 weeks)
+                         604800 )       ; Negative Cache TTL (1 week)
+
+; Define Name Servers
+@       IN      NS      master.samez.fr.
+@	IN	NS	slave.samez.fr.
+
+
+
+; Define other records (A, MX, etc.)
+2	IN      PTR     master.samez.fr ; Main server IP address
+3	IN	PTR	slave.samez.fr  ;
+4       IN      PTR     ftp.samez.fr    ; FTP server IP
+5       IN      PTR     mail.samez.fr   ; Mail server IP
+6       IN      PTR     voip.samez.fr   ; VoIP server IP
+7       IN      PTR     vpn.samez.fr    ; VPN server IP

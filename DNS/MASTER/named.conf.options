@@ -1,0 +1,19 @@
+// Specify where the BIND9 configuration files are located
+options {
+    directory "/etc/bind";  // Default directory for BIND9
+
+    // Allow queries from any IP address (for demonstration purposes)
+    allow-query { any; };
+
+    allow-transfer { 192.168.1.3; };
+
+    // Forward DNS queries to external DNS servers if not resolved locally
+    forwarders {
+        8.8.8.8;  // Google DNS
+        8.8.4.4;  // Google DNS
+    };
+
+    // Enable DNSSEC validation (optional, but recommended)
+    dnssec-validation auto;
+    recursion yes;
+};
