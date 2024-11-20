@@ -73,7 +73,7 @@ Refer to the attached diagram for the network architecture. Key elements include
 #### **Setup Instructions**
 1. Clone the repository:
    ```bash
-   git clone https://github.com/ayoubte/projet-inter
+   git clone https://github.com/AyoubTe/projet-inter
    cd projet-inter
    ```
 
