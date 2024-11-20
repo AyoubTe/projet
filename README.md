@@ -111,8 +111,4 @@ This project is evaluated based on:
 #### **Contributors**
 - Group Members: Baita Enzo, Errachidi Abdelgafour, SAMI Ayoub, Zuiri Sami and Marine
 
----
-
-#### **License**
-This project is licensed under the MIT License. See the LICENSE file for details.
 
