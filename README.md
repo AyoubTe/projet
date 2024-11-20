@@ -74,7 +74,7 @@ Refer to the attached diagram for the network architecture. Key elements include
 1. Clone the repository:
    ```bash
    git clone https://github.com/ayoubte/projet-inter
-   cd multi-site-network
+   cd projet-inter
    ```
 
 2. Install Docker and Docker Compose:
