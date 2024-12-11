@@ -5,8 +5,11 @@ FROM ubuntu:20.04
 RUN apt-get update && apt-get install -y isc-dhcp-server
 RUN echo "dhcp.samez.fr" > /etc/hostname
 
+# Create a repo For bail files
+RUN mkdir -p /var/lib/dhcp && touch /var/lib/dhcp/dhcpd.leases
+
 # Copy the DHCP configuration files
-COPY dhcpd.conf /etc/dhcp/dhcpd.conf
+COPY ./DHCP/dhcpd.conf /etc/dhcp/dhcpd.conf
 
 # Expose DHCP ports (67/UDP)
 EXPOSE 67/udp

@@ -1,0 +1,19 @@
+FROM ubuntu:20.04
+
+# Installation des dépendances
+RUN apt-get update && apt-get install -y \
+    isc-dhcp-client \
+    iproute2 \
+    netplan.io \
+    && rm -rf /var/lib/apt/lists/*
+
+# Configuration de l'interface réseau pour utiliser DHCP via Netplan
+RUN echo "network:" > /etc/netplan/01-netcfg.yaml && \
+    echo "  version: 2" >> /etc/netplan/01-netcfg.yaml && \
+    echo "  renderer: networkd" >> /etc/netplan/01-netcfg.yaml && \
+    echo "  ethernets:" >> /etc/netplan/01-netcfg.yaml && \
+    echo "    eth0:" >> /etc/netplan/01-netcfg.yaml && \
+    echo "      dhcp4: true" >> /etc/netplan/01-netcfg.yaml
+
+# Démarrer un shell bash (pas besoin de netplan apply)
+CMD ["/bin/bash"]

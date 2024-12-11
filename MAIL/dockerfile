@@ -4,13 +4,15 @@ FROM ubuntu:20.04
 # Install Postfix and Dovecot
 RUN apt-get update && apt-get install -y postfix dovecot-core dovecot-imapd
 RUN echo "mail.samez.fr" > /etc/hostname
+RUN touch /var/log/mail.log && chmod 666 /var/log/mail.log
+
 
 # Expose mail ports (25, 465, 587 for SMTP; 993 for IMAP)
 EXPOSE 25 465 587 993
 
 # Copy configuration files
-COPY ./MAIL/postfix_main.cf /etc/postfix/main.cf
-COPY ./MAIL/dovecot.conf /etc/dovecot/dovecot.conf
+COPY ./MAIL/certs/mail.samez.fr.crt /etc/ssl/certs/mail.samez.fr.crt
+COPY ./MAIL/certs/mail.samez.fr.key /etc/ssl/private/mail.samez.fr.key
 
 # Set up mail spool and directories
 VOLUME /var/mail

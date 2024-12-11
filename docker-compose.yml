@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: ./DNS/MASTER/dockerfile
+    container_name: dns_master
+    hostname: dns_master.samez.fr
     networks:
       my_network:
         ipv4_address: 192.168.1.2
@@ -21,6 +23,8 @@ services:
     build:
       context: .
       dockerfile: ./DNS/SLAVE/dockerfile
+    container_name: dns_slave
+    hostname: dns_slave..samez.fr
     networks:
       my_network:
         ipv4_address: 192.168.1.3
@@ -34,18 +38,24 @@ services:
     build:
       context: .
       dockerfile: ./FTP/dockerfile
+    container_name: ftp_server
+    hostname: ftp.samez.fr
     networks:
       my_network:
         ipv4_address: 192.168.1.4
     ports:
       - "21:21"
+      - "10000-10100:10000-10100"
     volumes:
       - ./ftp:/ftp
+    restart: unless-stopped
 
   mail:
     build:
       context: .
       dockerfile: ./MAIL/dockerfile
+    container_name: mail_server
+    hostname: mail.samez.fr
     networks:
       my_network:
         ipv4_address: 192.168.1.5
@@ -61,6 +71,8 @@ services:
     build:
       context: .
       dockerfile: ./VOIP/dockerfile
+    container_name: voip_server
+    hostname: voip.samez.fr
     networks:
       my_network:
         ipv4_address: 192.168.1.6
@@ -74,28 +86,82 @@ services:
     build:
       context: .
       dockerfile: ./VPN/dockerfile
+    container_name: vpn_server
+    hostname: vpn.samez.fr
     networks:
       my_network:
         ipv4_address: 192.168.1.7
     ports:
       - "1194:1194/udp"
-    volumes:
-      - ./VPN:/etc/openvpn
     cap_add:
       - Net_ADMIN
+    volumes:
+      - ./VPN:/etc/openvpn
+
+  dhcp:
+    build:
+      context: .
+      dockerfile: ./DHCP/dockerfile
+    container_name: dhcp_server
+    hostname: dhcp.samez.fr
+    networks:
+      my_network:
+        ipv4_address: 192.168.1.8
+    ports:
+      - "67:67/udp"
+    volumes:
+      - ./DHCP/dhcpd.conf:/etc/dhcp/dhcpd.conf
+      - dhcp-leases:/var/lib/dhcp
 
   web:
     build:
       context: .
       dockerfile: ./WEB/dockerfile
+    container_name: web_sercer
+    hostname: web.samez.fr
     networks:
       my_network:
-        ipv4_address: 192.168.1.8
+        ipv4_address: 192.168.1.9
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./html:/usr/share/nginx/html
+
+  pc:
+    build: 
+      context : .
+      dockerfile: ./PC/dockerfile
+    container_name: pc
+    hostname: pc
+    networks:
+      my_network:
+    tty: true
+    command: /bin/bash
+
+  router:
+    build:
+      context: .
+      dockerfile: ./ROUTER/dockerfile
+    container_name: router
+    hostname: router
+    networks:
+      - router_network
+    volumes:
+      - ./ROUTER/router-config:/etc/router-config
+    privileged: true 
+    cap_add:
+      - NET_ADMIN  
+    restart: always 
+  
+  vr:
+    build:
+      context: .
+      dockerfile: ./VR/dockerfile
+    container_name: vr
+    hostname: vr
+    networks:
+      - router_network
 
 networks:
   my_network:
@@ -104,3 +170,9 @@ networks:
       config:
         - subnet: "192.168.1.0/24"
           gateway: "192.168.1.1"
+  
+  router_network:
+    driver: bridge
+
+volumes:
+  dhcp-leases:

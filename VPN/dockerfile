@@ -1,23 +1,29 @@
-# Dockerfile for VPN Server (OpenVPN)
+# Use the official Ubuntu 20.04 image as the base
 FROM ubuntu:20.04
 
-# Install OpenVPN and Easy-RSA
-RUN apt-get update && apt-get install -y openvpn easy-rsa
+# Install OpenVPN, Easy-RSA, and necessary utilities
+RUN apt-get update && apt-get install -y \
+    apt-utils \
+    openvpn \
+    easy-rsa \
+    iproute2 \
+    && rm -rf /var/lib/apt/lists/* 
+
+# Set the hostname for the container (optional, can be configured as needed)
 RUN echo "vpn.samez.fr" > /etc/hostname
 
-
-# Expose the OpenVPN UDP port
+# Expose OpenVPN UDP port (1194 is the default OpenVPN port)
 EXPOSE 1194/udp
 
-# Copy the OpenVPN server configuration and certificate files
+# Copy the OpenVPN server configuration and certificate files from your local machine to the container
 COPY ./VPN/server.conf /etc/openvpn/server.conf
 COPY ./VPN/ca.crt /etc/openvpn/ca.crt
 COPY ./VPN/server.crt /etc/openvpn/server.crt
 COPY ./VPN/server.key /etc/openvpn/server.key
 COPY ./VPN/dh.pem /etc/openvpn/dh.pem
 
-# Volume for OpenVPN certificates and keys
+# Create a volume for OpenVPN certificates and keys (optional, allows easy host mount)
 VOLUME /etc/openvpn
 
-# Start OpenVPN with the server configuration file
+# Command to run OpenVPN in the container using the server config
 CMD ["openvpn", "--config", "/etc/openvpn/server.conf"]
