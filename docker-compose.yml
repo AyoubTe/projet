@@ -154,18 +154,18 @@ services:
       - NET_ADMIN  
     restart: always 
   
-  vr:
-    build:
-      context: .
-      dockerfile: ./VR/dockerfile
-    container_name: vr
-    hostname: vr
-    networks:
-      - router_network
+  #vr:
+  #  build:
+  #    context: .
+  #    dockerfile: ./VR/dockerfile
+  #  container_name: vr
+  #  hostname: vr
+  #  networks:
+  #    - router_network
 
 networks:
   my_network:
-    driver: bridge
+    driver: bridge # Bridge
     ipam:
       config:
         - subnet: "192.168.1.0/24"
